@@ -1,0 +1,111 @@
+openapi: 3.0.1
+info:
+  title: Drone Naigation System (DNS), drone API
+  description: A REST APIs that are called by a drones.
+  contact:
+    name: HousingAnywhere
+    email: support@housinganywhere.com
+  version: 1.0.0
+
+servers:
+  - url: https://dns.staging.housinganywhere.io
+    description: Staging Server
+  
+  - url: https://dns.qa.housinganywhere.io
+    description: QA Server
+
+  - url: https://dns.housinganywhere.io
+    description: PROD Server
+
+paths:
+  /api/v1/dns/drones/{did:[0-9]+}/location:
+    get:
+      summary: Get the location from positiona and velocity
+      parameters:
+      - name: did
+        in: path
+        description: drone's unique id
+        required: true
+        schema:
+          type: string
+      - name: x
+        in: query
+        description: drone's x position
+        required: true
+        schema:
+          type: number
+      - name: y
+        in: query
+        description: drone's y position
+        required: true
+        schema:
+          type: number
+      - name: z
+        in: query
+        description: drone's z position
+        required: true
+        schema:
+          type: number
+      - name: velocity
+        in: query
+        description: drone's velocit
+        required: true
+        schema:
+          type: number
+      - name: sector_id
+        in: query
+        description: drone's sector id
+        required: true
+        schema:
+          type: string
+
+      responses:
+        200:
+          description: location returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/location'
+        400:
+          description: Missing/malformed request parameters or body. See error for
+            details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: The drone is not targeting the right instance of DNS.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Description of the error.
+      description: Error descriptor.
+      example:
+        error: 'Error string'
+
+    location:
+      required:
+      - loc
+      type: object
+      properties:
+        loc:
+          type: number
+          description: location based on position parameter and velocity
+      description: Location
+      example:
+        application/json:
+          loc: 123.00

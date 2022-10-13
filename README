@@ -1,0 +1,26 @@
+------------------------------------------------------------------------------------
+                        Drone Navigations system (DNS)
+------------------------------------------------------------------------------------
+1. For API Documentation visit docs folder, better viewed with open API viewer.
+
+2. Tests
+    a. For Unit testing
+    $make unit_test
+
+    b. For Integration testing
+    $make integration_test
+    **Note: it runs an instance of server on local machine, be sure to select
+    a port that is free to listen.
+
+3. Operation
+    a. Sector ID suplied will be set as environment variable 'SECTOR_ID'
+       **Note: if not supplied, the instance could be used for multiple sectors
+
+4. Docker file could be used to build without Go build environment in the build m/c
+   port (defaults to 8080) and sector id (defaults to none) could be supplied while
+   launching the container.
+
+5. Binary mode:
+   cmd folder has the main entry point
+   $go build -o ha
+   $./ha -port=<port_num> -sid=<sector_id> 
